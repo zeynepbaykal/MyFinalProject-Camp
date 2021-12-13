@@ -11,6 +11,7 @@ using Entities.DTOs;
 using FluentValidation;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Business.Concrete
@@ -34,14 +35,22 @@ namespace Business.Concrete
 
             //magic strings-strinkleri ayrı ayrı yazmak anlamına gelir
 
-           
+
             //validate
 
             //ValidationTool.Validate(new ProductValidator(), product);
- 
-            _productDal.Add(product);
 
-            return new SuccessResult(Messages.ProductAdded); // constructor olusturduk
+            if (CheckIfProductCountOfCategoryCorrect(product.CategoryId).Succes)
+            {
+                if (CheckIfProductNameExists(product.ProductName).Succes)
+                {
+                    _productDal.Add(product);
+
+                    return new SuccessResult(Messages.ProductAdded); // constructor olusturduk
+                }
+            }
+            return new ErrorResult();
+           
 
         }
         //mesela burada liste donuyor.
@@ -76,6 +85,32 @@ namespace Business.Concrete
         public IDataResult<List<ProductDetailDto>> GetProductDetails()
         {
             return new SuccessDataResult<List<ProductDetailDto>> ( _productDal.GetProductDetails());
+        }
+        [ValidationAspect(typeof(ProductValidator))]
+        public IResult Update(Product product)
+        {
+            throw new NotImplementedException();
+        }
+
+        private IResult CheckIfProductCountOfCategoryCorrect(int categoryId)
+        {
+            //Select count (*) from products where categoryId=1
+            var result = _productDal.GetAll(p => p.CategoryId == categoryId).Count;
+            if (result >= 10)
+            {
+                return new ErrorResult(Messages.ProductCountOfCategoryAdded);
+            }
+            return new SuccessResult();
+        }
+
+        private IResult CheckIfProductNameExists(string productName)
+        {
+            var result = _productDal.GetAll(p => p.ProductName == productName).Any();
+            if (result)
+            {
+                return new ErrorResult(Messages.ProductNameAlreadyExists);
+            }
+            return new SuccessResult();
         }
     }
 }
