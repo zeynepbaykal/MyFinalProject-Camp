@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
@@ -30,6 +31,8 @@ namespace Business.Concrete
         }
         //void ben  özel bir tip döndermiyorum demektir
 
+        //Claim
+       [SecuredOperation("product.add, admin")]
         [ValidationAspect(typeof(ProductValidator))] //Add methodunu doğrula "productvalidator" kullanarak 
         public IResult Add(Product product)
         {

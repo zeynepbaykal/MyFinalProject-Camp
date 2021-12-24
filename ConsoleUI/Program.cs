@@ -35,7 +35,7 @@ namespace ConsoleUI
 
             var result = productManager.GetProductDetails();
 
-            if (result.Succes==true)
+            if (result.Success==true)
             {
                 foreach (var product in result.Data)
                 {

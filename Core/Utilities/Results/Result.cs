@@ -14,10 +14,10 @@ namespace Core.Utilities.Results
 
         public Result(bool success) //overloading
         {
-            Succes = success;
+            Success = success;
         }
 
-        public bool Succes { get; }
+        public bool Success { get; }
 
         public string Message { get; }   //lambdanın kaesısı sadece get oldugu için ne yazarsak yazalım onu return eder.
         //get set edilemez.
