@@ -16,6 +16,7 @@ namespace Business.Abstract
         IDataResult<Product> GetById(int productId); //tek basına bir ürün dönderir. ve ürünün sonucunu yazdırır.(mesela bır tane alışveriş sitesıne gırdık ve o urunun detayına ulaşmak istiyoruz , detayına ulaşmak için  kullanabılırız.) 
         IResult Add(Product product);
         IResult Update(Product product);
+        IResult AddTransactionalTest(Product product); //uygulamalarda tutarlılığı korumak için yapılan bır yontem.
 
     }
 }
